@@ -16,6 +16,7 @@ public class SSTableViewCell: UIView {
     }
   }
   var height: CGFloat = 44
+  var indexPath = IndexPath(row: 0, section: 0)
   @IBOutlet var containerView: UIView!
   @IBOutlet var titleLabel: UILabel!
   

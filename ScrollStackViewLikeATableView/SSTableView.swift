@@ -71,7 +71,7 @@ public class SSTableView : UIScrollView, UIScrollViewDelegate {
   }
   
   //MARK: - Properties
-  @IBInspectable var sizeMatching = SizeMatching.Height
+  @IBInspectable var sizeMatching = SizeMatching.Width
   
   //MARK: - Lifecycle
   override public func layoutSubviews() {
@@ -123,10 +123,21 @@ public class SSTableView : UIScrollView, UIScrollViewDelegate {
   //It is not real dequeue reusable cell. It will
   func dequeueCell(withIdentifier identifier: String, for indexPath: IndexPath) -> SSTableViewCell? {
     let ssTableViewCell =  UINib(nibName: identifier, bundle: nil).instantiate(withOwner: nil, options: nil)[0] as? SSTableViewCell
+    ssTableViewCell?.indexPath = indexPath
     let height = tableDelegate?.tableView?(self, heightForRowAt: indexPath)
     ssTableViewCell?.translatesAutoresizingMaskIntoConstraints = false
     ssTableViewCell?.heightAnchor.constraint(equalToConstant: height ?? 44).isActive = true
+    let tap = UITapGestureRecognizer(target: self, action: #selector(touchUpInside(_:)))
+    ssTableViewCell?.addGestureRecognizer(tap)
+    ssTableViewCell?.isUserInteractionEnabled = true
     return ssTableViewCell
   }
+  
+  @objc private func touchUpInside(_ gesture: UITapGestureRecognizer) {
+    if let indexPath = (gesture.view as? SSTableViewCell)?.indexPath {
+      tableDelegate?.tableView?(self, didSelectRowAt: indexPath)
+    }
+  }
+    
 }
 

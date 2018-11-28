@@ -53,4 +53,9 @@ extension ViewController: SSTableViewDelegate, SSTableViewDataSource {
   }
   
   
+  func tableView(_ tableView: SSTableView, didSelectRowAt indexPath: IndexPath) {
+    print("didSelectRowAt: \(indexPath)")
+  }
+  
+  
 }
