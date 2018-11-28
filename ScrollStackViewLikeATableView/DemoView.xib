@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" restorationIdentifier="DemoView" translatesAutoresizingMaskIntoConstraints="NO" id="ctA-Mq-udD" customClass="SSTableViewCell" customModule="ScrollStackViewLikeATableView" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <subviews>
+                <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b2e-c0-uS2">
+                    <rect key="frame" x="0.0" y="30.5" width="375" height="640.5"/>
+                </containerView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h8o-3V-U70">
+                    <rect key="frame" x="5" y="5" width="42" height="20.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="b2e-c0-uS2" secondAttribute="bottom" constant="-4" id="0wV-mN-sJu"/>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="h8o-3V-U70" secondAttribute="trailing" constant="20" symbolic="YES" id="A2j-U5-TQ1"/>
+                <constraint firstItem="h8o-3V-U70" firstAttribute="top" secondItem="ctA-Mq-udD" secondAttribute="top" constant="5" id="A6H-LB-KvO"/>
+                <constraint firstItem="b2e-c0-uS2" firstAttribute="top" secondItem="h8o-3V-U70" secondAttribute="bottom" constant="5" id="HKp-9B-xgq"/>
+                <constraint firstItem="b2e-c0-uS2" firstAttribute="leading" secondItem="ctA-Mq-udD" secondAttribute="leading" id="LeW-I2-BA7"/>
+                <constraint firstItem="h8o-3V-U70" firstAttribute="leading" secondItem="ctA-Mq-udD" secondAttribute="leading" constant="5" id="Mls-g3-cqN"/>
+                <constraint firstAttribute="height" constant="220" id="ZDQ-sH-EoX"/>
+                <constraint firstItem="b2e-c0-uS2" firstAttribute="width" secondItem="ctA-Mq-udD" secondAttribute="width" id="pvZ-Nf-6nl"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="G0B-Gu-vgb"/>
+            <connections>
+                <outlet property="containerView" destination="b2e-c0-uS2" id="qIV-gg-F6p"/>
+                <outlet property="titleLabel" destination="h8o-3V-U70" id="VXP-2Q-gLG"/>
+            </connections>
+            <point key="canvasLocation" x="260" y="-199"/>
+        </view>
+    </objects>
+</document>

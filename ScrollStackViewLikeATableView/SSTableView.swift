@@ -41,7 +41,7 @@ extension SSTableView {
 
 @objc public protocol SSTableViewDataSource {
   func tableView(_ tableView: SSTableView, numberOfRowsInSection section: Int) -> Int
-  func tableView(_ tableView: SSTableView, cellForRowAt indexPath: IndexPath) -> UIViewController
+  func tableView(_ tableView: SSTableView, cellForRowAt indexPath: IndexPath) -> SSTableViewCell
   @objc optional func numberOfSections(in tableView: SSTableView) -> Int // Default is 1 if not implemented
   @objc optional func tableView(_ tableView: SSTableView, titleForHeaderInSection section: Int) -> String? // fixed font style. use custom view (UILabel) if you want something different
   @objc optional func tableView(_ tableView: SSTableView, titleForFooterInSection section: Int) -> String?
@@ -57,31 +57,32 @@ public class SSTableView : UIScrollView, UIScrollViewDelegate {
   @IBOutlet var stackView: UIStackView!
   
   override init(frame: CGRect) {
-    //TODO: get
+    super.init(frame: frame)
+    
   }
   
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
+    
   }
   
-  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+  private func scrollViewDidScroll(_ scrollView: UIScrollView) {
     tableDelegate?.scrollViewDidScroll?(scrollView)
   }
   
   //MARK: - Properties
-  @IBInspectable var sizeMatching = SizeMatching.Width
+  @IBInspectable var sizeMatching = SizeMatching.Height
   
   //MARK: - Lifecycle
   override public func layoutSubviews() {
     super.layoutSubviews()
     
-    if let contentView = stackView {
-      if (contentView.superview != self) {
-        self.addSubview(contentView)
+    if let stackView = stackView {
+      if (stackView.superview != self) {
+        self.addSubview(stackView)
       }
       
-      var size = contentView.bounds.size
-      
+      var size = stackView.bounds.size
       switch self.sizeMatching {
       case .Width:    size.width = self.bounds.width
       case .Height:   size.height = self.bounds.height
@@ -89,16 +90,43 @@ public class SSTableView : UIScrollView, UIScrollViewDelegate {
       case .None:     break
       }
       
-      contentView.frame = CGRect(origin: CGPoint(x: 0, y: 0), size: size)
+      stackView.frame = CGRect(origin: CGPoint(x: 0, y: 0), size: size)
       self.contentSize = size
     }
   }
   
-  func dequeueReusableCell(withIdentifier identifier: String, for indexPath: IndexPath) -> UIViewController {
-    let viewController: UIViewController
+  func reloadData(){
+    stackView.arrangedSubviews.forEach { view in
+      view.removeFromSuperview()
+    }
+    drawTableView()
+    layoutSubviews()
+  }
+  
+  private func drawTableView(){
+    let sectionNumber: Int = dataSource?.numberOfSections?(in: self) ?? 1
+    for i in 0..<sectionNumber {
+      if let rowNumber: Int = dataSource?.tableView(self, numberOfRowsInSection: i) {
+        #warning("stackView.addArrangedSubview(sectionHeader)")
+        for j in 0..<rowNumber {
+          let indexPath = IndexPath(row: j, section: i)
+          if let cell = dataSource?.tableView(self, cellForRowAt: indexPath) {
+            stackView.addArrangedSubview(cell)
+          }
+        }
+        #warning("stackView.addArrangedSubview(sectionFooter)")
+      }
+    }
     
-    return
-    
+  }
+  
+  //It is not real dequeue reusable cell. It will
+  func dequeueCell(withIdentifier identifier: String, for indexPath: IndexPath) -> SSTableViewCell? {
+    let ssTableViewCell =  UINib(nibName: identifier, bundle: nil).instantiate(withOwner: nil, options: nil)[0] as? SSTableViewCell
+    let height = tableDelegate?.tableView?(self, heightForRowAt: indexPath)
+    ssTableViewCell?.translatesAutoresizingMaskIntoConstraints = false
+    ssTableViewCell?.heightAnchor.constraint(equalToConstant: height ?? 44).isActive = true
+    return ssTableViewCell
   }
 }
 

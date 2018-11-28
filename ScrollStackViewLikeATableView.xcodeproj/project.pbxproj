@@ -13,6 +13,8 @@
 		19E5CE1B21AD493F00561393 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 19E5CE1A21AD493F00561393 /* Assets.xcassets */; };
 		19E5CE1E21AD493F00561393 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 19E5CE1C21AD493F00561393 /* LaunchScreen.storyboard */; };
 		19E5CE2621AD5E0800561393 /* SSTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E5CE2521AD5E0800561393 /* SSTableView.swift */; };
+		19E5CE2821AE36BC00561393 /* SSTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E5CE2721AE36BC00561393 /* SSTableViewCell.swift */; };
+		19E5CE2A21AE54BF00561393 /* DemoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 19E5CE2921AE54BF00561393 /* DemoView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		19E5CE1D21AD493F00561393 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		19E5CE1F21AD493F00561393 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		19E5CE2521AD5E0800561393 /* SSTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSTableView.swift; sourceTree = "<group>"; };
+		19E5CE2721AE36BC00561393 /* SSTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSTableViewCell.swift; sourceTree = "<group>"; };
+		19E5CE2921AE54BF00561393 /* DemoView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DemoView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,7 +63,9 @@
 				19E5CE1321AD493D00561393 /* AppDelegate.swift */,
 				19E5CE1521AD493D00561393 /* ViewController.swift */,
 				19E5CE2521AD5E0800561393 /* SSTableView.swift */,
+				19E5CE2721AE36BC00561393 /* SSTableViewCell.swift */,
 				19E5CE1721AD493D00561393 /* Main.storyboard */,
+				19E5CE2921AE54BF00561393 /* DemoView.xib */,
 				19E5CE1A21AD493F00561393 /* Assets.xcassets */,
 				19E5CE1C21AD493F00561393 /* LaunchScreen.storyboard */,
 				19E5CE1F21AD493F00561393 /* Info.plist */,
@@ -126,6 +132,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				19E5CE1E21AD493F00561393 /* LaunchScreen.storyboard in Resources */,
+				19E5CE2A21AE54BF00561393 /* DemoView.xib in Resources */,
 				19E5CE1B21AD493F00561393 /* Assets.xcassets in Resources */,
 				19E5CE1921AD493D00561393 /* Main.storyboard in Resources */,
 			);
@@ -139,6 +146,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				19E5CE1621AD493D00561393 /* ViewController.swift in Sources */,
+				19E5CE2821AE36BC00561393 /* SSTableViewCell.swift in Sources */,
 				19E5CE1421AD493D00561393 /* AppDelegate.swift in Sources */,
 				19E5CE2621AD5E0800561393 /* SSTableView.swift in Sources */,
 			);
