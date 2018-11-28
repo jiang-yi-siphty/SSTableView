@@ -12,6 +12,7 @@
 		19E5CE1921AD493D00561393 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 19E5CE1721AD493D00561393 /* Main.storyboard */; };
 		19E5CE1B21AD493F00561393 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 19E5CE1A21AD493F00561393 /* Assets.xcassets */; };
 		19E5CE1E21AD493F00561393 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 19E5CE1C21AD493F00561393 /* LaunchScreen.storyboard */; };
+		19E5CE2621AD5E0800561393 /* SSTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E5CE2521AD5E0800561393 /* SSTableView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		19E5CE1A21AD493F00561393 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		19E5CE1D21AD493F00561393 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		19E5CE1F21AD493F00561393 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		19E5CE2521AD5E0800561393 /* SSTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSTableView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +58,7 @@
 			children = (
 				19E5CE1321AD493D00561393 /* AppDelegate.swift */,
 				19E5CE1521AD493D00561393 /* ViewController.swift */,
+				19E5CE2521AD5E0800561393 /* SSTableView.swift */,
 				19E5CE1721AD493D00561393 /* Main.storyboard */,
 				19E5CE1A21AD493F00561393 /* Assets.xcassets */,
 				19E5CE1C21AD493F00561393 /* LaunchScreen.storyboard */,
@@ -137,6 +140,7 @@
 			files = (
 				19E5CE1621AD493D00561393 /* ViewController.swift in Sources */,
 				19E5CE1421AD493D00561393 /* AppDelegate.swift in Sources */,
+				19E5CE2621AD5E0800561393 /* SSTableView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

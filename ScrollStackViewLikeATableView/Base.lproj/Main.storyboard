@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -9,16 +13,104 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="ScrollStackViewLikeATableView" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="92A-sW-STT" customClass="SSTableView" customModule="ScrollStackViewLikeATableView" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="75c-An-cOM">
+                                        <rect key="frame" x="0.0" y="8" width="375" height="738"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g5o-s6-JF0">
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="120"/>
+                                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="120" id="Ki0-cT-Mzw"/>
+                                                </constraints>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Dg-VE-N00">
+                                                <rect key="frame" x="0.0" y="126" width="375" height="100"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="100" id="18W-Ly-jnD"/>
+                                                </constraints>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tqR-Tb-YSr">
+                                                <rect key="frame" x="0.0" y="232" width="375" height="200"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="200" id="BPO-wO-6rV"/>
+                                                </constraints>
+                                            </view>
+                                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5FF-5i-Py3">
+                                                <rect key="frame" x="0.0" y="438" width="375" height="300"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="300" id="ugK-MT-n4t"/>
+                                                </constraints>
+                                                <connections>
+                                                    <segue destination="Qof-17-zPs" kind="embed" id="fcT-aY-h9i"/>
+                                                </connections>
+                                            </containerView>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="75c-An-cOM" firstAttribute="leading" secondItem="92A-sW-STT" secondAttribute="leading" id="Dn4-56-gs2"/>
+                                    <constraint firstAttribute="trailing" secondItem="75c-An-cOM" secondAttribute="trailing" id="ki9-fk-S82"/>
+                                    <constraint firstAttribute="bottom" secondItem="75c-An-cOM" secondAttribute="bottom" constant="413" id="lJY-cx-gVg"/>
+                                    <constraint firstItem="75c-An-cOM" firstAttribute="top" secondItem="92A-sW-STT" secondAttribute="topMargin" id="s2q-0Q-3mP"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="stackView" destination="75c-An-cOM" id="4MH-Rc-MAv"/>
+                                </connections>
+                            </scrollView>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="92A-sW-STT" secondAttribute="trailing" id="QA6-wF-CvK"/>
+                            <constraint firstItem="92A-sW-STT" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Tfv-3W-Lpm"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="92A-sW-STT" secondAttribute="bottom" id="XiK-3b-VuY"/>
+                            <constraint firstItem="92A-sW-STT" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="lYz-Ca-LUc"/>
+                            <constraint firstItem="75c-An-cOM" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="niL-7P-u3c"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <connections>
+                        <outlet property="mockTableView" destination="92A-sW-STT" id="b1X-0U-bwL"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="136.80000000000001" y="133.5832083958021"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="s6H-dR-dvx">
+            <objects>
+                <viewController id="Qof-17-zPs" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="IQW-k8-ruU">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="300"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Container View" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WH3-UC-j2f">
+                                <rect key="frame" x="129.5" y="139.5" width="116" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="WH3-UC-j2f" firstAttribute="centerY" secondItem="IQW-k8-ruU" secondAttribute="centerY" id="T5l-Bi-ajm"/>
+                            <constraint firstItem="WH3-UC-j2f" firstAttribute="centerX" secondItem="IQW-k8-ruU" secondAttribute="centerX" id="Tlk-iT-UXj"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="usf-99-aNp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="914" y="133"/>
         </scene>
     </scenes>
 </document>
