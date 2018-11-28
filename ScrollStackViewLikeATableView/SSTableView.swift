@@ -36,6 +36,11 @@ extension SSTableView {
   @objc optional func tableView(_ tableView: SSTableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat
   @objc optional func tableView(_ tableView: SSTableView, didSelectRowAt indexPath: IndexPath)
   @objc optional func scrollViewDidScroll(_ scrollView: UIScrollView)
+  @objc optional func tableView(_ tableView: SSTableView, heightForHeaderInSection section: Int) -> CGFloat
+  @objc optional func tableView(_ tableView: SSTableView, heightForFooterInSection section: Int) -> CGFloat
+  @objc optional func tableView(_ tableView: SSTableView, viewForHeaderInSection section: Int) -> UIView?
+  @objc optional func tableView(_ tableView: SSTableView, viewForFooterInSection section: Int) -> UIView?
+
 
 }
 
@@ -107,17 +112,68 @@ public class SSTableView : UIScrollView, UIScrollViewDelegate {
     let sectionNumber: Int = dataSource?.numberOfSections?(in: self) ?? 1
     for i in 0..<sectionNumber {
       if let rowNumber: Int = dataSource?.tableView(self, numberOfRowsInSection: i) {
-        #warning("stackView.addArrangedSubview(sectionHeader)")
+        stackView.addArrangedSubview(makeSectionHeader(inSection: i))
         for j in 0..<rowNumber {
           let indexPath = IndexPath(row: j, section: i)
           if let cell = dataSource?.tableView(self, cellForRowAt: indexPath) {
             stackView.addArrangedSubview(cell)
           }
         }
-        #warning("stackView.addArrangedSubview(sectionFooter)")
+        stackView.addArrangedSubview(makeSectionFooter(inSection: i))
       }
     }
-    
+  }
+  
+  private func makeSectionHeader(inSection section: Int) -> UIView {
+    if let headerView = tableDelegate?.tableView?(self, viewForHeaderInSection: section) {
+      let headerViewHeight = headerView.frame.height
+      headerView.translatesAutoresizingMaskIntoConstraints = false
+      headerView.heightAnchor.constraint(equalToConstant: headerViewHeight).isActive = true
+      headerView.frame = CGRect(x: 0, y: 0, width: frame.width, height: headerViewHeight)
+      return headerView
+    } else {
+      let headerView = UIView()
+      headerView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+      let headerViewHeight = tableDelegate?.tableView?(self, heightForHeaderInSection: section) ?? 44
+      headerView.translatesAutoresizingMaskIntoConstraints = false
+      headerView.heightAnchor.constraint(equalToConstant: headerViewHeight).isActive = true
+      headerView.frame = CGRect(x: 0, y: 0, width: frame.width, height: headerViewHeight)
+      let titleLabel = UILabel()
+      headerView.addSubview(titleLabel)
+      titleLabel.text = "Header Title"
+      titleLabel.translatesAutoresizingMaskIntoConstraints = false
+      NSLayoutConstraint.activate([
+        titleLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
+        titleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 5.0)
+        ])
+      return headerView
+    }
+  }
+  
+  private func makeSectionFooter(inSection section: Int) -> UIView {
+    if let footerView =  tableDelegate?.tableView?(self, viewForFooterInSection: section) {
+      let footerViewHeight = footerView.frame.height
+      footerView.translatesAutoresizingMaskIntoConstraints = false
+      footerView.heightAnchor.constraint(equalToConstant: footerViewHeight).isActive = true
+      footerView.frame = CGRect(x: 0, y: 0, width: frame.width, height: footerViewHeight)
+      return footerView
+    } else {
+      let footerView = UIView()
+      footerView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+      let footerViewHeight = tableDelegate?.tableView?(self, heightForFooterInSection: section) ?? 44
+      footerView.translatesAutoresizingMaskIntoConstraints = false
+      footerView.heightAnchor.constraint(equalToConstant: footerViewHeight).isActive = true
+      footerView.frame = CGRect(x: 0, y: 0, width: frame.width, height: footerViewHeight)
+      let titleLabel = UILabel()
+      footerView.addSubview(titleLabel)
+      titleLabel.translatesAutoresizingMaskIntoConstraints = false
+      NSLayoutConstraint.activate([
+        titleLabel.centerYAnchor.constraint(equalTo: footerView.centerYAnchor),
+        titleLabel.leadingAnchor.constraint(equalTo: footerView.leadingAnchor, constant: 5.0)
+        ])
+      return footerView
+      
+    }
   }
   
   //It is not real dequeue reusable cell. It will
@@ -138,6 +194,6 @@ public class SSTableView : UIScrollView, UIScrollViewDelegate {
       tableDelegate?.tableView?(self, didSelectRowAt: indexPath)
     }
   }
-    
+  
 }
 
