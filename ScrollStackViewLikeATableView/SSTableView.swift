@@ -11,24 +11,42 @@ import UIKit
 
 extension SSTableView {
   
-  public enum Style : Int {
+  public enum Style: Int {
     case plain
     case grouped
   }
   
-  
-  public enum ScrollPosition : Int {
+  public enum ScrollPosition: Int {
     case none
     case top
     case middle
     case bottom
   }
   
-  @objc public enum SizeMatching: Int {
-    case Width, Height, Both, None
+  // scroll so row of interest is completely visible at top/center/bottom of view
+  public enum RowAnimation: Int {
+    case fade
+    case right // slide in from right (or out to right)
+    case left
+    case top
+    case bottom
+    case none
+    case middle // attempts to keep cell centered in the space it will/did occupy
+    case automatic // chooses an appropriate animation style for you
   }
 }
 
+enum SSTableViewRowHeight {
+  static let `default`: CGFloat = 44.0
+}
+
+enum SSTableViewSectionGapHeight {
+  static let `default`: CGFloat = 16.0
+}
+
+enum SSTableViewLeadingSpace {
+  static let `default`: CGFloat = 5.0
+}
 
 @objc public protocol SSTableViewDelegate {
   
@@ -40,25 +58,33 @@ extension SSTableView {
   @objc optional func tableView(_ tableView: SSTableView, heightForFooterInSection section: Int) -> CGFloat
   @objc optional func tableView(_ tableView: SSTableView, viewForHeaderInSection section: Int) -> UIView?
   @objc optional func tableView(_ tableView: SSTableView, viewForFooterInSection section: Int) -> UIView?
-
-
+  
 }
 
 @objc public protocol SSTableViewDataSource {
   func tableView(_ tableView: SSTableView, numberOfRowsInSection section: Int) -> Int
   func tableView(_ tableView: SSTableView, cellForRowAt indexPath: IndexPath) -> SSTableViewCell
-  @objc optional func numberOfSections(in tableView: SSTableView) -> Int // Default is 1 if not implemented
-  @objc optional func tableView(_ tableView: SSTableView, titleForHeaderInSection section: Int) -> String? // fixed font style. use custom view (UILabel) if you want something different
+  @objc optional func tableView(_ tableView: SSTableView, moduleForSectionAt section: Int) -> SSTableViewSectionModuleCapable?
+  @objc optional func numberOfSections(in tableView: SSTableView) -> Int
+  @objc optional func tableView(_ tableView: SSTableView, titleForHeaderInSection section: Int) -> String?
   @objc optional func tableView(_ tableView: SSTableView, titleForFooterInSection section: Int) -> String?
 }
 
-public class SSTableView : UIScrollView, UIScrollViewDelegate {
+@objc public protocol SSTableViewSectionModuleCapable {
+  func prepareModule()
+}
+
+public class SSTableView: UIScrollView, UIScrollViewDelegate {
   
   weak var dataSource: SSTableViewDataSource?
   weak var tableDelegate: SSTableViewDelegate?
   
   var style: SSTableView.Style = .plain
-  var rowHeight: CGFloat = 44.0
+  var rowHeight = SSTableViewRowHeight.default
+  var sectionGap = SSTableViewSectionGapHeight.default
+  var sectionGapColour = UIColor.clear
+  //  var tapGesture: UIGestureRecognizer?
+  
   @IBOutlet var stackView: UIStackView!
   
   override init(frame: CGRect) {
@@ -68,63 +94,43 @@ public class SSTableView : UIScrollView, UIScrollViewDelegate {
   
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
-    
   }
   
   private func scrollViewDidScroll(_ scrollView: UIScrollView) {
     tableDelegate?.scrollViewDidScroll?(scrollView)
   }
   
-  //MARK: - Properties
-  @IBInspectable var sizeMatching = SizeMatching.Width
-  
-  //MARK: - Lifecycle
-  override public func layoutSubviews() {
-    super.layoutSubviews()
-    
-    if let stackView = stackView {
-      if (stackView.superview != self) {
-        self.addSubview(stackView)
-      }
-      
-      var size = stackView.bounds.size
-      switch self.sizeMatching {
-      case .Width:    size.width = self.bounds.width
-      case .Height:   size.height = self.bounds.height
-      case .Both:     size.width = self.bounds.width; size.height = self.bounds.height
-      case .None:     break
-      }
-      
-      stackView.frame = CGRect(origin: CGPoint(x: 0, y: 0), size: size)
-      self.contentSize = size
-    }
-  }
-  
   func reloadData(){
     stackView.arrangedSubviews.forEach { view in
       view.removeFromSuperview()
     }
-    drawTableView()
+    prepareTableView()
     layoutSubviews()
   }
   
-  private func drawTableView(){
+  private func prepareTableView(){
     let sectionNumber: Int = dataSource?.numberOfSections?(in: self) ?? 1
-    for i in 0..<sectionNumber {
-      if let rowNumber: Int = dataSource?.tableView(self, numberOfRowsInSection: i) {
-        stackView.addArrangedSubview(makeSectionHeader(inSection: i))
-        for j in 0..<rowNumber {
-          let indexPath = IndexPath(row: j, section: i)
+    for sectionIndex in 0..<sectionNumber {
+      if let numberOfRows: Int = dataSource?.tableView(self, numberOfRowsInSection: sectionIndex) {
+        stackView.addArrangedSubview(prepareSectionHeader(inSection: sectionIndex))
+        for rowIndex in 0..<numberOfRows {
+          let indexPath = IndexPath(row: rowIndex, section: sectionIndex)
           if let cell = dataSource?.tableView(self, cellForRowAt: indexPath) {
             stackView.addArrangedSubview(cell)
           }
+          
         }
-        stackView.addArrangedSubview(makeSectionFooter(inSection: i))
+        dataSource?.tableView?(self, moduleForSectionAt: sectionIndex)?.prepareModule()
+        stackView.addArrangedSubview(prepareSectionFooter(inSection: sectionIndex))
+        let sectionGapView = prepareSectionGap()
+        stackView.addArrangedSubview(sectionGapView)
       }
     }
+    let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height/2))
+    stackView.addArrangedSubview(paddingView)
   }
   
-  private func makeSectionHeader(inSection section: Int) -> UIView {
+  private func prepareSectionHeader(inSection section: Int) -> UIView {
     if let headerView = tableDelegate?.tableView?(self, viewForHeaderInSection: section) {
       let headerViewHeight = headerView.frame.height
       headerView.translatesAutoresizingMaskIntoConstraints = false
@@ -133,24 +139,22 @@ public class SSTableView : UIScrollView, UIScrollViewDelegate {
       return headerView
     } else {
       let headerView = UIView()
-      headerView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
-      let headerViewHeight = tableDelegate?.tableView?(self, heightForHeaderInSection: section) ?? 44
+      let headerViewHeight = tableDelegate?.tableView?(self, heightForHeaderInSection: section) ?? SSTableViewRowHeight.default
       headerView.translatesAutoresizingMaskIntoConstraints = false
       headerView.heightAnchor.constraint(equalToConstant: headerViewHeight).isActive = true
       headerView.frame = CGRect(x: 0, y: 0, width: frame.width, height: headerViewHeight)
       let titleLabel = UILabel()
       headerView.addSubview(titleLabel)
-      titleLabel.text = "Header Title"
       titleLabel.translatesAutoresizingMaskIntoConstraints = false
       NSLayoutConstraint.activate([
         titleLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
-        titleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 5.0)
+        titleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: SSTableViewLeadingSpace.default)
         ])
       return headerView
     }
   }
   
-  private func makeSectionFooter(inSection section: Int) -> UIView {
+  private func prepareSectionFooter(inSection section: Int) -> UIView {
     if let footerView =  tableDelegate?.tableView?(self, viewForFooterInSection: section) {
       let footerViewHeight = footerView.frame.height
       footerView.translatesAutoresizingMaskIntoConstraints = false
@@ -159,8 +163,7 @@ public class SSTableView : UIScrollView, UIScrollViewDelegate {
       return footerView
     } else {
       let footerView = UIView()
-      footerView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
-      let footerViewHeight = tableDelegate?.tableView?(self, heightForFooterInSection: section) ?? 44
+      let footerViewHeight = tableDelegate?.tableView?(self, heightForFooterInSection: section) ?? SSTableViewRowHeight.default
       footerView.translatesAutoresizingMaskIntoConstraints = false
       footerView.heightAnchor.constraint(equalToConstant: footerViewHeight).isActive = true
       footerView.frame = CGRect(x: 0, y: 0, width: frame.width, height: footerViewHeight)
@@ -169,31 +172,98 @@ public class SSTableView : UIScrollView, UIScrollViewDelegate {
       titleLabel.translatesAutoresizingMaskIntoConstraints = false
       NSLayoutConstraint.activate([
         titleLabel.centerYAnchor.constraint(equalTo: footerView.centerYAnchor),
-        titleLabel.leadingAnchor.constraint(equalTo: footerView.leadingAnchor, constant: 5.0)
+        titleLabel.leadingAnchor.constraint(equalTo: footerView.leadingAnchor, constant: SSTableViewLeadingSpace.default)
         ])
       return footerView
       
     }
   }
   
-  //It is not real dequeue reusable cell. It will
-  func dequeueCell(withIdentifier identifier: String, for indexPath: IndexPath) -> SSTableViewCell? {
-    let ssTableViewCell =  UINib(nibName: identifier, bundle: nil).instantiate(withOwner: nil, options: nil)[0] as? SSTableViewCell
-    ssTableViewCell?.indexPath = indexPath
+  private func prepareSectionGap() -> UIView {
+    let sectionGapView = UIView(frame: CGRect(x: 0, y: 0, width: frame.width, height: sectionGap))
+    sectionGapView.backgroundColor = sectionGapColour
+    sectionGapView.translatesAutoresizingMaskIntoConstraints = false
+    sectionGapView.heightAnchor.constraint(equalToConstant: sectionGap).isActive = true
+    return sectionGapView
+  }
+  
+  func dequeueCell(withNibName identifier: String, for indexPath: IndexPath) -> SSTableViewCell? {
+    guard let ssTableViewCell = UINib(nibName: identifier, bundle: nil).instantiate(withOwner: nil, options: nil)[0] as? SSTableViewCell else { return nil }
+    ssTableViewCell.indexPath = indexPath
     let height = tableDelegate?.tableView?(self, heightForRowAt: indexPath)
-    ssTableViewCell?.translatesAutoresizingMaskIntoConstraints = false
-    ssTableViewCell?.heightAnchor.constraint(equalToConstant: height ?? 44).isActive = true
-    let tap = UITapGestureRecognizer(target: self, action: #selector(touchUpInside(_:)))
-    ssTableViewCell?.addGestureRecognizer(tap)
-    ssTableViewCell?.isUserInteractionEnabled = true
+    ssTableViewCell.translatesAutoresizingMaskIntoConstraints = false
+    ssTableViewCell.heightAnchor.constraint(equalToConstant: height ?? SSTableViewRowHeight.default).isActive = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(cellTouchUpInside(_:)))
+        tapGesture.delegate = self
+        ssTableViewCell.addGestureRecognizer(tapGesture)
+    ssTableViewCell.isUserInteractionEnabled = true
     return ssTableViewCell
   }
   
-  @objc private func touchUpInside(_ gesture: UITapGestureRecognizer) {
+  func cellForRow(at indexPath: IndexPath) -> SSTableViewCell? {
+    return self.stackView.arrangedSubviews.first { ($0 as? SSTableViewCell)?.indexPath == indexPath
+      } as? SSTableViewCell
+  }
+  
+  @objc private func cellTouchUpInside(_ gesture: UITapGestureRecognizer) {
     if let indexPath = (gesture.view as? SSTableViewCell)?.indexPath {
       tableDelegate?.tableView?(self, didSelectRowAt: indexPath)
     }
   }
-  
 }
 
+extension SSTableView: UIGestureRecognizerDelegate {
+  
+  //  public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
+  //                                         shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+  //    print("=====================")
+  //    print("gestureRecognizer: \(gestureRecognizer.view!)")
+  //    print("otherGestureRecognizer: \(otherGestureRecognizer.view!)")
+  //
+  //    return false
+  //  }
+  //
+  //  public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+  //    return false
+  //  }
+  
+  //  public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+  //    if (gestureRecognizer is UITapGestureRecognizer) {
+  //      return true
+  //    } else {
+  //      return false
+  //    }
+  //  }
+  
+  //  override public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+  ////    if gestureRecognizer == tapGesture {
+  ////      gestureRecognizer.
+  ////    }
+  //    print("gestureRecognizer : \(gestureRecognizer)")
+  //    return false
+  //  }
+  
+  
+  public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+    
+    return stackView.arrangedSubviews.reduce(true) { (result, view) -> Bool in
+      if (touch.view?.isDescendant(of: view))!,
+        gestureRecognizer.isKind(of: UITapGestureRecognizer.self),
+        view.isKind(of: SSTableViewCell.self)
+      {
+        return result && false
+      } else {
+        return result
+      }
+    }
+  }
+}
+
+// MARK: - Support Module
+extension SSTableView {
+  
+  func reloadModules(at section: Int) {
+    dataSource?.tableView?(self, moduleForSectionAt: section)?.prepareModule()
+  }
+  
+}

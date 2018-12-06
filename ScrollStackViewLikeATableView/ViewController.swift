@@ -29,12 +29,12 @@ extension ViewController: SSTableViewDelegate, SSTableViewDataSource {
   }
   
   func tableView(_ tableView: SSTableView, numberOfRowsInSection section: Int) -> Int {
-    return 13
+    return 3
   }
   
   func tableView(_ tableView: SSTableView, cellForRowAt indexPath: IndexPath) -> SSTableViewCell {
-    if let cell = tableView.dequeueCell(withIdentifier: "DemoView", for: indexPath)  {
-      cell.title = "I SSTableViewCell in a stack view"
+    if let cell = tableView.dequeueCell(withNibName: "DemoView", for: indexPath) {
+      cell.title = "This is a SSTableViewCell in a stack view"
       
       let storyboard = UIStoryboard(name: "Main", bundle: nil)
       let contentViewController = storyboard.instantiateViewController(withIdentifier: "DemoContainerViewContent")
@@ -57,5 +57,25 @@ extension ViewController: SSTableViewDelegate, SSTableViewDataSource {
     print("didSelectRowAt: \(indexPath)")
   }
   
+  
+  func tableView(_ tableView: SSTableView, viewForHeaderInSection section: Int) -> UIView? {
+    if let header =  UINib(nibName: "SectionHeader",
+                           bundle: nil).instantiate(withOwner: nil,
+                                                    options: nil)[0] as? SectionHeader {
+      return header
+    } else {
+      return nil
+    }
+  }
+  
+  func tableView(_ tableView: SSTableView, viewForFooterInSection section: Int) -> UIView? {
+    if let footer =  UINib(nibName: "SectionFooter",
+                           bundle: nil).instantiate(withOwner: nil,
+                                                    options: nil)[0] as? SectionFooter {
+      return footer
+    } else {
+      return nil
+    }
+  }
   
 }

@@ -20,14 +20,5 @@ public class SSTableViewCell: UIView {
   @IBOutlet var containerView: UIView!
   @IBOutlet var titleLabel: UILabel!
   
-  public override init(frame: CGRect) {
-    super.init(frame: frame)
-    
-  }
-  
-  required init?(coder aDecoder: NSCoder) {
-    super.init(coder: aDecoder)
-  }
-  
   
 }
