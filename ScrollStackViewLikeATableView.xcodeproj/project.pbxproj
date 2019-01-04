@@ -19,6 +19,8 @@
 		19E5CE5421B0D9BD00561393 /* SectionFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E5CE5021B0D9BC00561393 /* SectionFooter.swift */; };
 		19E5CE5521B0D9BD00561393 /* SectionHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 19E5CE5121B0D9BD00561393 /* SectionHeader.xib */; };
 		19E5CE5621B0D9BD00561393 /* SectionFooter.xib in Resources */ = {isa = PBXBuildFile; fileRef = 19E5CE5221B0D9BD00561393 /* SectionFooter.xib */; };
+		A23FE1AD21DF1B1A000289E6 /* DemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A23FE1AC21DF1B1A000289E6 /* DemoViewController.swift */; };
+		A23FE1AF21DF1EB2000289E6 /* DemoSSTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A23FE1AE21DF1EB2000289E6 /* DemoSSTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +38,8 @@
 		19E5CE5021B0D9BC00561393 /* SectionFooter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionFooter.swift; sourceTree = "<group>"; };
 		19E5CE5121B0D9BD00561393 /* SectionHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SectionHeader.xib; sourceTree = "<group>"; };
 		19E5CE5221B0D9BD00561393 /* SectionFooter.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SectionFooter.xib; sourceTree = "<group>"; };
+		A23FE1AC21DF1B1A000289E6 /* DemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoViewController.swift; sourceTree = "<group>"; };
+		A23FE1AE21DF1EB2000289E6 /* DemoSSTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoSSTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,20 +73,30 @@
 			isa = PBXGroup;
 			children = (
 				19E5CE1321AD493D00561393 /* AppDelegate.swift */,
+				19E5CE1721AD493D00561393 /* Main.storyboard */,
 				19E5CE1521AD493D00561393 /* ViewController.swift */,
-				19E5CE2521AD5E0800561393 /* SSTableView.swift */,
-				19E5CE2721AE36BC00561393 /* SSTableViewCell.swift */,
 				19E5CE5021B0D9BC00561393 /* SectionFooter.swift */,
 				19E5CE5221B0D9BD00561393 /* SectionFooter.xib */,
 				19E5CE4F21B0D9BC00561393 /* SectionHeader.swift */,
 				19E5CE5121B0D9BD00561393 /* SectionHeader.xib */,
-				19E5CE1721AD493D00561393 /* Main.storyboard */,
 				19E5CE2921AE54BF00561393 /* DemoView.xib */,
+				A23FE1AE21DF1EB2000289E6 /* DemoSSTableViewCell.swift */,
+				A23FE1AC21DF1B1A000289E6 /* DemoViewController.swift */,
+				A23FE1B021DF80F4000289E6 /* SSTableView */,
 				19E5CE1A21AD493F00561393 /* Assets.xcassets */,
 				19E5CE1C21AD493F00561393 /* LaunchScreen.storyboard */,
 				19E5CE1F21AD493F00561393 /* Info.plist */,
 			);
 			path = ScrollStackViewLikeATableView;
+			sourceTree = "<group>";
+		};
+		A23FE1B021DF80F4000289E6 /* SSTableView */ = {
+			isa = PBXGroup;
+			children = (
+				19E5CE2521AD5E0800561393 /* SSTableView.swift */,
+				19E5CE2721AE36BC00561393 /* SSTableViewCell.swift */,
+			);
+			path = SSTableView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -161,8 +175,10 @@
 			files = (
 				19E5CE5421B0D9BD00561393 /* SectionFooter.swift in Sources */,
 				19E5CE1621AD493D00561393 /* ViewController.swift in Sources */,
+				A23FE1AF21DF1EB2000289E6 /* DemoSSTableViewCell.swift in Sources */,
 				19E5CE2821AE36BC00561393 /* SSTableViewCell.swift in Sources */,
 				19E5CE5321B0D9BD00561393 /* SectionHeader.swift in Sources */,
+				A23FE1AD21DF1B1A000289E6 /* DemoViewController.swift in Sources */,
 				19E5CE1421AD493D00561393 /* AppDelegate.swift in Sources */,
 				19E5CE2621AD5E0800561393 /* SSTableView.swift in Sources */,
 			);

@@ -58,6 +58,7 @@ enum SSTableViewLeadingSpace {
   @objc optional func tableView(_ tableView: SSTableView, heightForFooterInSection section: Int) -> CGFloat
   @objc optional func tableView(_ tableView: SSTableView, viewForHeaderInSection section: Int) -> UIView?
   @objc optional func tableView(_ tableView: SSTableView, viewForFooterInSection section: Int) -> UIView?
+  @objc optional func tableView(_ tableView: SSTableView, didTapFotterInSection section: Int)
   
 }
 
@@ -83,7 +84,6 @@ public class SSTableView: UIScrollView, UIScrollViewDelegate {
   var rowHeight = SSTableViewRowHeight.default
   var sectionGap = SSTableViewSectionGapHeight.default
   var sectionGapColour = UIColor.clear
-  //  var tapGesture: UIGestureRecognizer?
   
   @IBOutlet var stackView: UIStackView!
   
@@ -116,9 +116,10 @@ public class SSTableView: UIScrollView, UIScrollViewDelegate {
         for rowIndex in 0..<numberOfRows {
           let indexPath = IndexPath(row: rowIndex, section: sectionIndex)
           if let cell = dataSource?.tableView(self, cellForRowAt: indexPath) {
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(cellTouchUpInside(_:)))
+            cell.addGestureRecognizer(tapGesture)
             stackView.addArrangedSubview(cell)
           }
-          
         }
         dataSource?.tableView?(self, moduleForSectionAt: sectionIndex)?.prepareModule()
         stackView.addArrangedSubview(prepareSectionFooter(inSection: sectionIndex))
@@ -133,12 +134,14 @@ public class SSTableView: UIScrollView, UIScrollViewDelegate {
   private func prepareSectionHeader(inSection section: Int) -> UIView {
     if let headerView = tableDelegate?.tableView?(self, viewForHeaderInSection: section) {
       let headerViewHeight = headerView.frame.height
+      headerView.tag = section
       headerView.translatesAutoresizingMaskIntoConstraints = false
       headerView.heightAnchor.constraint(equalToConstant: headerViewHeight).isActive = true
       headerView.frame = CGRect(x: 0, y: 0, width: frame.width, height: headerViewHeight)
       return headerView
     } else {
       let headerView = UIView()
+      headerView.tag = section
       let headerViewHeight = tableDelegate?.tableView?(self, heightForHeaderInSection: section) ?? SSTableViewRowHeight.default
       headerView.translatesAutoresizingMaskIntoConstraints = false
       headerView.heightAnchor.constraint(equalToConstant: headerViewHeight).isActive = true
@@ -157,16 +160,22 @@ public class SSTableView: UIScrollView, UIScrollViewDelegate {
   private func prepareSectionFooter(inSection section: Int) -> UIView {
     if let footerView =  tableDelegate?.tableView?(self, viewForFooterInSection: section) {
       let footerViewHeight = footerView.frame.height
+      footerView.tag = section
       footerView.translatesAutoresizingMaskIntoConstraints = false
       footerView.heightAnchor.constraint(equalToConstant: footerViewHeight).isActive = true
       footerView.frame = CGRect(x: 0, y: 0, width: frame.width, height: footerViewHeight)
+      let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tappedModuleFooter(_:)))
+      footerView.addGestureRecognizer(tapGesture)
       return footerView
     } else {
       let footerView = UIView()
       let footerViewHeight = tableDelegate?.tableView?(self, heightForFooterInSection: section) ?? SSTableViewRowHeight.default
+      footerView.tag = section
       footerView.translatesAutoresizingMaskIntoConstraints = false
       footerView.heightAnchor.constraint(equalToConstant: footerViewHeight).isActive = true
       footerView.frame = CGRect(x: 0, y: 0, width: frame.width, height: footerViewHeight)
+      let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tappedModuleFooter(_:)))
+      footerView.addGestureRecognizer(tapGesture)
       let titleLabel = UILabel()
       footerView.addSubview(titleLabel)
       titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -192,10 +201,9 @@ public class SSTableView: UIScrollView, UIScrollViewDelegate {
     ssTableViewCell.indexPath = indexPath
     let height = tableDelegate?.tableView?(self, heightForRowAt: indexPath)
     ssTableViewCell.translatesAutoresizingMaskIntoConstraints = false
-    ssTableViewCell.heightAnchor.constraint(equalToConstant: height ?? SSTableViewRowHeight.default).isActive = true
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(cellTouchUpInside(_:)))
-        tapGesture.delegate = self
-        ssTableViewCell.addGestureRecognizer(tapGesture)
+    ssTableViewCell.heightAnchor
+        .constraint(equalToConstant: height ?? SSTableViewRowHeight.default)
+        .isActive = true
     ssTableViewCell.isUserInteractionEnabled = true
     return ssTableViewCell
   }
@@ -212,58 +220,16 @@ public class SSTableView: UIScrollView, UIScrollViewDelegate {
   }
 }
 
-extension SSTableView: UIGestureRecognizerDelegate {
-  
-  //  public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
-  //                                         shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-  //    print("=====================")
-  //    print("gestureRecognizer: \(gestureRecognizer.view!)")
-  //    print("otherGestureRecognizer: \(otherGestureRecognizer.view!)")
-  //
-  //    return false
-  //  }
-  //
-  //  public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-  //    return false
-  //  }
-  
-  //  public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-  //    if (gestureRecognizer is UITapGestureRecognizer) {
-  //      return true
-  //    } else {
-  //      return false
-  //    }
-  //  }
-  
-  //  override public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-  ////    if gestureRecognizer == tapGesture {
-  ////      gestureRecognizer.
-  ////    }
-  //    print("gestureRecognizer : \(gestureRecognizer)")
-  //    return false
-  //  }
-  
-  
-  public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-    
-    return stackView.arrangedSubviews.reduce(true) { (result, view) -> Bool in
-      if (touch.view?.isDescendant(of: view))!,
-        gestureRecognizer.isKind(of: UITapGestureRecognizer.self),
-        view.isKind(of: SSTableViewCell.self)
-      {
-        return result && false
-      } else {
-        return result
-      }
-    }
-  }
-}
-
 // MARK: - Support Module
 extension SSTableView {
   
-  func reloadModules(at section: Int) {
+  func reloadModule(at section: Int) {
     dataSource?.tableView?(self, moduleForSectionAt: section)?.prepareModule()
+  }
+  
+  @objc func tappedModuleFooter(_ gesture: UITapGestureRecognizer) {
+    guard let section = gesture.view?.tag else { return }
+    tableDelegate?.tableView?(self, didTapFotterInSection: section)
   }
   
 }
