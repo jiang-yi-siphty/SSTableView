@@ -6,7 +6,6 @@
 //  Copyright © 2018 Yi JIANG. All rights reserved.
 //
 
-import Foundation
 import UIKit
 
 public class SSTableViewCell: UIView {
