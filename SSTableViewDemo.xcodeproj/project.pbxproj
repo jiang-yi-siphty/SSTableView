@@ -24,7 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		19E5CE1021AD493D00561393 /* ScrollStackViewLikeATableView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScrollStackViewLikeATableView.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		19E5CE1021AD493D00561393 /* SSTableViewDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SSTableViewDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		19E5CE1321AD493D00561393 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		19E5CE1521AD493D00561393 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		19E5CE1821AD493D00561393 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -56,7 +56,7 @@
 		19E5CE0721AD493D00561393 = {
 			isa = PBXGroup;
 			children = (
-				19E5CE1221AD493D00561393 /* ScrollStackViewLikeATableView */,
+				19E5CE1221AD493D00561393 /* SSTableViewDemo */,
 				19E5CE1121AD493D00561393 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -64,12 +64,12 @@
 		19E5CE1121AD493D00561393 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				19E5CE1021AD493D00561393 /* ScrollStackViewLikeATableView.app */,
+				19E5CE1021AD493D00561393 /* SSTableViewDemo.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		19E5CE1221AD493D00561393 /* ScrollStackViewLikeATableView */ = {
+		19E5CE1221AD493D00561393 /* SSTableViewDemo */ = {
 			isa = PBXGroup;
 			children = (
 				19E5CE1321AD493D00561393 /* AppDelegate.swift */,
@@ -87,7 +87,7 @@
 				19E5CE1C21AD493F00561393 /* LaunchScreen.storyboard */,
 				19E5CE1F21AD493F00561393 /* Info.plist */,
 			);
-			path = ScrollStackViewLikeATableView;
+			path = SSTableViewDemo;
 			sourceTree = "<group>";
 		};
 		A23FE1B021DF80F4000289E6 /* SSTableView */ = {
@@ -102,9 +102,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		19E5CE0F21AD493D00561393 /* ScrollStackViewLikeATableView */ = {
+		19E5CE0F21AD493D00561393 /* SSTableViewDemo */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 19E5CE2221AD493F00561393 /* Build configuration list for PBXNativeTarget "ScrollStackViewLikeATableView" */;
+			buildConfigurationList = 19E5CE2221AD493F00561393 /* Build configuration list for PBXNativeTarget "SSTableViewDemo" */;
 			buildPhases = (
 				19E5CE0C21AD493D00561393 /* Sources */,
 				19E5CE0D21AD493D00561393 /* Frameworks */,
@@ -114,9 +114,9 @@
 			);
 			dependencies = (
 			);
-			name = ScrollStackViewLikeATableView;
+			name = SSTableViewDemo;
 			productName = ScrollStackViewLikeATableView;
-			productReference = 19E5CE1021AD493D00561393 /* ScrollStackViewLikeATableView.app */;
+			productReference = 19E5CE1021AD493D00561393 /* SSTableViewDemo.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -134,7 +134,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 19E5CE0B21AD493D00561393 /* Build configuration list for PBXProject "ScrollStackViewLikeATableView" */;
+			buildConfigurationList = 19E5CE0B21AD493D00561393 /* Build configuration list for PBXProject "SSTableViewDemo" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -147,7 +147,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				19E5CE0F21AD493D00561393 /* ScrollStackViewLikeATableView */,
+				19E5CE0F21AD493D00561393 /* SSTableViewDemo */,
 			);
 		};
 /* End PBXProject section */
@@ -328,12 +328,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7G2EZGEQH4;
-				INFOPLIST_FILE = ScrollStackViewLikeATableView/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/SSTableViewDemo/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = Yi.ScrollStackViewLikeATableView;
+				PRODUCT_BUNDLE_IDENTIFIER = Yi.SSTableView;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -346,12 +346,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7G2EZGEQH4;
-				INFOPLIST_FILE = ScrollStackViewLikeATableView/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/SSTableViewDemo/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = Yi.ScrollStackViewLikeATableView;
+				PRODUCT_BUNDLE_IDENTIFIER = Yi.SSTableView;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -361,7 +361,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		19E5CE0B21AD493D00561393 /* Build configuration list for PBXProject "ScrollStackViewLikeATableView" */ = {
+		19E5CE0B21AD493D00561393 /* Build configuration list for PBXProject "SSTableViewDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				19E5CE2021AD493F00561393 /* Debug */,
@@ -370,7 +370,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		19E5CE2221AD493F00561393 /* Build configuration list for PBXNativeTarget "ScrollStackViewLikeATableView" */ = {
+		19E5CE2221AD493F00561393 /* Build configuration list for PBXNativeTarget "SSTableViewDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				19E5CE2321AD493F00561393 /* Debug */,

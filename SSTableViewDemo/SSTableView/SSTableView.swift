@@ -71,9 +71,9 @@ public class SSTableView: UIScrollView, UIScrollViewDelegate {
     static let automaticDimension: CGFloat = -1.0
     
     enum TagShift: Int {
-        case module = 1000
-        case header = 2000
-        case footer = 3000
+        case module = 100000
+        case header = 200000
+        case footer = 300000
     }
     
     enum Constants {
@@ -135,6 +135,7 @@ public class SSTableView: UIScrollView, UIScrollViewDelegate {
                     let indexPath = IndexPath(row: rowIndex, section: sectionIndex)
                     if let cell = dataSource?.tableView(self, cellForRowAt: indexPath) {
                         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(cellTouchUpInside(_:)))
+                        tapGesture.cancelsTouchesInView = false
                         cell.addGestureRecognizer(tapGesture)
                         stackView.addArrangedSubview(cell)
                     }

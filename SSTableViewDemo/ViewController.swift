@@ -12,13 +12,33 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var mockTableView: SSTableView!
     
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.tintColor = #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1)
+        refreshControl.addTarget(self, action:
+            #selector(handleRefreshPulled),
+                                 for: UIControl.Event.valueChanged)
+        
+        return refreshControl
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         mockTableView.tableDelegate = self
         mockTableView.dataSource = self
         mockTableView.reloadData()
+        mockTableView.refreshControl = refreshControl
     }
     
+    @objc func handleRefreshPulled() {
+        mockTableView.setContentOffset(.zero, animated: false)
+        DispatchQueue.global().asyncAfter(deadline: .now() + 3) { 
+            // Do something like call API
+            DispatchQueue.main.async { [weak self] in
+                self?.refreshControl.endRefreshing()
+            }
+        }  
+    }
     
 }
 
