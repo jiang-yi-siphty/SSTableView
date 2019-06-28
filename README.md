@@ -1,10 +1,10 @@
 # SSTableView
 
 ## Overview  
-The SSTableView is a TableView build by a scroll view with stack view. Most common APIs are samilar with UITableView. In SSTableView, developer **can embed ViewController in to SSTableViewCell** which is impossible in dynamic UITableViewCell.  
+The SSTableView is a TableView build by a scroll view with a stack view.  Most common APIs are similar to UITableView. In SSTableView, the developer can embed a ViewController into the SSTableViewCell which is impossible in dynamic UITableViewCell. 
 
 ## Orientation
-I haven't wrape this SSTableView into module yet. To use it, developer need manually make a StackView embed into a ScrollView like what the demo code does. Then, to use it will be same like using a UITableView and UITableViewCell. However, in SSTableView, developer can embedded a ViewController and its view into the SSTableViewCell.
+I haven't wrap this SSTableView into module yet. To use it, the developer need manually make a StackView embed into a ScrollView like what the demo code does. Then, to use it will be the same as using a UITableView and UITableViewCell. However, in SSTableView, the developer can embed a ViewController and its view into the SSTableViewCell.
 
 ## TODO  
 1. Decouple SSTableView with storyboard or xib.
